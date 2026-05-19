@@ -1,5 +1,5 @@
 context:
-  version: "1.40.9"
+  version: "1.41.0"
 
 package:
   name: stripe-cli
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/stripe/stripe-cli/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: dcb2890fadc1a6ef008cc316f61f1025c7a412c9bd9766a5a61c098813b05ff4
+  sha256: 05902e2bd57d03f468576d19df3183a9698c867cca56a24ab913d38bd9f791b1
   target_directory: src
 
 build:
@@ -16,15 +16,13 @@ build:
     - cd src
     - go-licenses save ./cmd/stripe --save_path ../library_licenses
     - if: unix
-      then: go build -v -o $PREFIX/bin/stripe -ldflags="-s -w -X github.com/stripe/stripe-cli/pkg/version.Version=${{ version }}" ./cmd/stripe
-      else: go build -v -o %LIBRARY_BIN%\stripe.exe -ldflags="-s -X github.com/stripe/stripe-cli/pkg/version.Version=${{ version }}" .\cmd\stripe
-    - if: unix
       then:
+        - go build -v -o $PREFIX/bin/stripe -ldflags="-s -w -X github.com/stripe/stripe-cli/pkg/version.Version=${{ version }}" ./cmd/stripe
         - mkdir -p $PREFIX/share/bash-completion/completions $PREFIX/share/zsh/site-functions $PREFIX/share/fish/vendor_completions.d
         - $PREFIX/bin/stripe completion --shell bash --write-to-stdout > $PREFIX/share/bash-completion/completions/stripe
         - $PREFIX/bin/stripe completion --shell zsh --write-to-stdout > $PREFIX/share/zsh/site-functions/_stripe
         - $PREFIX/bin/stripe completion --shell fish --write-to-stdout > $PREFIX/share/fish/vendor_completions.d/stripe.fish
-
+      else: go build -v -o %LIBRARY_BIN%\stripe.exe -ldflags="-s -X github.com/stripe/stripe-cli/pkg/version.Version=${{ version }}" .\cmd\stripe
 requirements:
   build:
     - ${{ compiler("go-nocgo") }}
