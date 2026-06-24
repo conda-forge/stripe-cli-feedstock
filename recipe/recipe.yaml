@@ -1,5 +1,5 @@
 context:
-  version: "1.42.15"
+  version: "1.43.1"
 
 package:
   name: stripe-cli
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/stripe/stripe-cli/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 26fb3292114423cdd9ac2d133c161d7317af312e70f37bfd830f72882dc43daa
+  sha256: 1bd4628d3e84493d7baec937cc561c9a58395ab766593a0a9cd5091045bec2bc
   target_directory: src
 
 build:
